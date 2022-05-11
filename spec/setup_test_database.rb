@@ -2,9 +2,12 @@
 
 require 'pg'
 
-p "Setting up test database..."
+def setup_test_database
+  connection = PG.connect(dbname: "bookmark_manager_test")
 
-  connection = PG.connect(dbname: 'bookmark_manager_test')
+  connection.exec("TRUNCATE bookmarks")
 
-  # Clear the bookmarks table
-  connection.exec("TRUNCATE bookmarks;")
+  # connection.exec("INSERT INTO bookmarks (url) VALUES('www.google.com');")
+  # connection.exec("INSERT INTO bookmarks (url) VALUES('www.bing.com');")
+  # connection.exec("INSERT INTO bookmarks (url) VALUES('www.duckduckgo.com');")
+end
