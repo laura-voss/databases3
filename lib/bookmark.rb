@@ -32,6 +32,6 @@ class Bookmark
       connection = PG.connect(dbname: 'bookmark_manager')
     end 
 
-    connection.exec("INSERT INTO bookmarks(url, title) VALUES('#{website}', '#{name}')")
+    connection.exec_params("INSERT INTO bookmarks(url, title) VALUES($1, $2)", [website, name])
   end
 end
