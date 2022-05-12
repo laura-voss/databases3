@@ -10,11 +10,20 @@ describe Bookmark do
       connection.exec("INSERT INTO bookmarks (url) VALUES('http://www.destroyallsoftware.com');")
       connection.exec("INSERT INTO bookmarks (url) VALUES('http://www.google.com');")
 
-      bookmarks = Bookmark.all
+      bookmarks = Bookmark.all.map { |bookmark| {url: bookmark.url, title: bookmark.title} }
 
-      expect(bookmarks).to include("http://www.makersacademy.com")
-      expect(bookmarks).to include("http://www.destroyallsoftware.com")
-      expect(bookmarks).to include("http://www.google.com")
+      expect(bookmarks).to include({:title=>nil, :url=>"http://www.makersacademy.com"})
+    end
+  end
+
+  describe '.create' do
+    it ' creates new entry to the database' do
+      connection = PG.connect(dbname: 'bookmark_manager_test')
+
+      Bookmark.create("http://whatever.com", "nothing")
+      bookmarks = Bookmark.all.map { |bookmark| {url: bookmark.url, title: bookmark.title} }
+
+      expect(bookmarks).to include({:title=>"nothing", :url=>"http://whatever.com"})
     end
   end
 end
